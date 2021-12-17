@@ -3,7 +3,7 @@
 
     <groupId>org.vaadin.gatanaso</groupId>
     <artifactId>multiselect-combo-box-flow</artifactId>
-    <version>3.0.3-SNAPSHOT</version>
+    <version>3.0.3-datadobi-1</version>
     <name>Multiselect Combo Box</name>
     <description>Integration of multiselect-combo-box for Vaadin platform</description>
 
@@ -209,4 +209,11 @@
             </build>
         </profile>
     </profiles>
+    <distributionManagement>
+        <repository>
+            <id>central</id>
+            <name>mavenserver-releases</name>
+            <url>http://mavenserver.dobi:8081/artifactory/libs-release-local</url>
+        </repository>
+    </distributionManagement>
 </project>
