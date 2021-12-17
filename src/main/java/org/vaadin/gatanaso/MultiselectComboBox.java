@@ -89,7 +89,7 @@ import elemental.json.JsonValue;
  */
 @Tag("multiselect-combo-box")
 @NpmPackage(value = "@datadobi/multiselect-combo-box", version = "2.4.2-datadobi-1")
-@JsModule("multiselect-combo-box/src/multiselect-combo-box.js")
+@JsModule("@datadobi/multiselect-combo-box/src/multiselect-combo-box.js")
 @JsModule("./multiselectComboBoxConnector.js")
 public class MultiselectComboBox<T>
         extends AbstractSinglePropertyField<MultiselectComboBox<T>, Set<T>>
