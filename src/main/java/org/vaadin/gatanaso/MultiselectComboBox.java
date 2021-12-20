@@ -12,21 +12,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import com.vaadin.flow.component.AbstractSinglePropertyField;
-import com.vaadin.flow.component.ClientCallable;
-import com.vaadin.flow.component.ComponentEvent;
-import com.vaadin.flow.component.ComponentEventListener;
-import com.vaadin.flow.component.DomEvent;
-import com.vaadin.flow.component.EventData;
-import com.vaadin.flow.component.HasEnabled;
-import com.vaadin.flow.component.HasSize;
-import com.vaadin.flow.component.HasStyle;
-import com.vaadin.flow.component.HasTheme;
-import com.vaadin.flow.component.HasValidation;
-import com.vaadin.flow.component.ItemLabelGenerator;
-import com.vaadin.flow.component.Synchronize;
-import com.vaadin.flow.component.Tag;
-import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.data.binder.HasFilterableDataProvider;
@@ -88,7 +74,7 @@ import elemental.json.JsonValue;
  * @author gatanaso
  */
 @Tag("multiselect-combo-box")
-@NpmPackage(value = "@datadobi/multiselect-combo-box", version = "2.4.2-datadobi-2")
+@NpmPackage(value = "@datadobi/multiselect-combo-box", version = "2.4.2-datadobi-3")
 @JsModule("@datadobi/multiselect-combo-box/src/multiselect-combo-box.js")
 @JsModule("./multiselectComboBoxConnector.js")
 public class MultiselectComboBox<T>
@@ -305,7 +291,8 @@ public class MultiselectComboBox<T>
 
         if (template == null) {
             template = new Element("template");
-            getElement().appendChild(template);
+            getElement().executeJs("return $0.shadowRoot.querySelector('vaadin-combo-box-light').appendChild($1)",
+                    getElement(), template);
         }
         scheduleRender();
     }
