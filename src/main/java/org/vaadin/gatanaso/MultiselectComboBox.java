@@ -258,9 +258,6 @@ public class MultiselectComboBox<T>
                                 + "items into the MultiselectComboBox before setting a value.");
             }
         }
-        if (getSingleSelectMode() && value.size() > 1) {
-            throw new IllegalArgumentException("You can't set multiple values if single select mode is enabled");
-        }
         super.setValue(value);
         refreshValue();
     }
