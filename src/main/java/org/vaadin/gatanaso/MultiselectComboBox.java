@@ -74,7 +74,7 @@ import elemental.json.JsonValue;
  * @author gatanaso
  */
 @Tag("multiselect-combo-box")
-@NpmPackage(value = "@datadobi/multiselect-combo-box", version = "2.4.2-datadobi-3")
+@NpmPackage(value = "@datadobi/multiselect-combo-box", version = "2.4.2-datadobi-4")
 @JsModule("@datadobi/multiselect-combo-box/src/multiselect-combo-box.js")
 @JsModule("./multiselectComboBoxConnector.js")
 public class MultiselectComboBox<T>
@@ -257,6 +257,9 @@ public class MultiselectComboBox<T>
                                 + "Use setItems or setDataProvider to populate "
                                 + "items into the MultiselectComboBox before setting a value.");
             }
+        }
+        if (getSingleSelectMode() && value.size() > 1) {
+            throw new IllegalArgumentException("You can't set multiple values if single select mode is enabled");
         }
         super.setValue(value);
         refreshValue();
@@ -638,6 +641,22 @@ public class MultiselectComboBox<T>
         return dataCommunicator.getDataProvider();
     }
 
+    /**
+     * Enables or disabled single select mode.
+     */
+    public void setSingleSelectMode(boolean enable)
+    {
+        getElement().setProperty("singleSelectMode", enable);
+    }
+
+    /**
+     * Gets the current state of the single select mode
+     */
+    public boolean getSingleSelectMode()
+    {
+        return getElement().getProperty("singleSelectMode", false);
+    }
+
     private void reset() {
         lastFilter = null;
         if (dataCommunicator != null) {
@@ -683,10 +702,14 @@ public class MultiselectComboBox<T>
 
     @Override
     public void updateSelection(Set<T> addedItems, Set<T> removedItems) {
-        Set<T> value = new HashSet<>(getValue());
-        value.addAll(addedItems);
-        value.removeAll(removedItems);
-        setValue(value);
+        if (getSingleSelectMode()) {
+            setValue(addedItems);
+        } else {
+            Set<T> value = new HashSet<>(getValue());
+            value.addAll(addedItems);
+            value.removeAll(removedItems);
+            setValue(value);
+        }
     }
 
     @Override

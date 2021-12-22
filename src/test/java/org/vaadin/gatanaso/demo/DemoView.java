@@ -28,6 +28,7 @@ public class DemoView extends VerticalLayout {
         setMargin(true);
 
         addTitle();
+        addSingleSelectStringDemo();
         addSimpleStringDemo();
         addObjectDemo();
         addObjectDemoWithLabelGenerator();
@@ -46,6 +47,24 @@ public class DemoView extends VerticalLayout {
         Label title = new Label("Multiselect Combo Box Demos");
         add(title);
         setHorizontalComponentAlignment(Alignment.CENTER, title);
+    }
+
+    private void addSingleSelectStringDemo() {
+        MultiselectComboBox<String> multiselectComboBox = new MultiselectComboBox();
+        multiselectComboBox.setLabel("MultiselectComboBox with string items in single select mode");
+        multiselectComboBox.setPlaceholder("Add");
+        multiselectComboBox.setWidth("100%");
+        multiselectComboBox.setItems("Item 1", "Item 2", "Item 3", "Item 4");
+        multiselectComboBox.setSingleSelectMode(true);
+        multiselectComboBox.addSelectionListener(
+                event -> Notification.show(event.toString()));
+
+        Button getValueBtn = new Button("Get value");
+        getValueBtn.addClickListener(
+                event -> multiselectComboBoxValueChangeHandler(
+                        multiselectComboBox));
+
+        add(buildDemoContainer(multiselectComboBox, getValueBtn));
     }
 
     private void addSimpleStringDemo() {
