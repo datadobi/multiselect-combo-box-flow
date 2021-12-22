@@ -74,7 +74,7 @@ import elemental.json.JsonValue;
  * @author gatanaso
  */
 @Tag("multiselect-combo-box")
-@NpmPackage(value = "@datadobi/multiselect-combo-box", version = "2.4.2-datadobi-4")
+@NpmPackage(value = "@datadobi/multiselect-combo-box", version = "2.4.2-datadobi-5")
 @JsModule("@datadobi/multiselect-combo-box/src/multiselect-combo-box.js")
 @JsModule("./multiselectComboBoxConnector.js")
 public class MultiselectComboBox<T>
@@ -699,7 +699,7 @@ public class MultiselectComboBox<T>
 
     @Override
     public void updateSelection(Set<T> addedItems, Set<T> removedItems) {
-        if (getSingleSelectMode()) {
+        if (getSingleSelectMode() && !addedItems.isEmpty()) {
             setValue(addedItems);
         } else {
             Set<T> value = new HashSet<>(getValue());
