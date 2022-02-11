@@ -51,6 +51,7 @@ public class DemoView extends VerticalLayout {
 
     private void addSingleSelectStringDemo() {
         MultiselectComboBox<String> multiselectComboBox = new MultiselectComboBox();
+        multiselectComboBox.addThemeName("whatever");
         multiselectComboBox.setLabel("MultiselectComboBox with string items in single select mode");
         multiselectComboBox.setPlaceholder("Add");
         multiselectComboBox.setWidth("100%");
