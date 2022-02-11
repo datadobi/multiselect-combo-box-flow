@@ -74,7 +74,7 @@ import elemental.json.JsonValue;
  * @author gatanaso
  */
 @Tag("multiselect-combo-box")
-@NpmPackage(value = "@datadobi/multiselect-combo-box", version = "2.4.2-datadobi-5")
+@NpmPackage(value = "@datadobi/multiselect-combo-box", version = "3.0.0-alpha.1")
 @JsModule("@datadobi/multiselect-combo-box/src/multiselect-combo-box.js")
 @JsModule("./multiselectComboBoxConnector.js")
 public class MultiselectComboBox<T>
@@ -104,6 +104,7 @@ public class MultiselectComboBox<T>
     };
 
     private MultiselectComboBoxDataCommunicator<T> dataCommunicator;
+    private Function<T, Object> uniqueKeyDataGenerator;
     private ItemLabelGenerator<T> itemLabelGenerator = String::valueOf;
     private Registration dataGeneratorRegistration;
 
@@ -249,7 +250,7 @@ public class MultiselectComboBox<T>
     @Override
     public void setValue(Set<T> value) {
         if (dataCommunicator == null) {
-            if (value == null) {
+            if (value == null || value.equals(getEmptyValue())) {
                 return;
             } else {
                 throw new IllegalStateException(
@@ -657,6 +658,7 @@ public class MultiselectComboBox<T>
     private void reset() {
         lastFilter = null;
         if (dataCommunicator != null) {
+            dataCommunicator.setPageSize(getPageSize());
             dataCommunicator.setRequestedRange(0, 0);
             dataCommunicator.reset();
         }
@@ -798,7 +800,7 @@ public class MultiselectComboBox<T>
     }
 
     @ClientCallable
-    private void initDataConnector() {
+    private void notifyReady() {
         // init data connector when shadow-dom is ready
         getElement().executeJs("$0.$connector.initDataConnector()");
     }
@@ -936,6 +938,9 @@ public class MultiselectComboBox<T>
                     arrayUpdater, data -> getElement()
                             .callJsFunction("$connector.updateData", data),
                     getElement().getNode());
+            if (uniqueKeyDataGenerator != null) {
+            	dataCommunicator.setUniqueKeyDataGenerator(uniqueKeyDataGenerator);
+            }
         }
 
         scheduleRender();
@@ -1088,9 +1093,7 @@ public class MultiselectComboBox<T>
      *   This method is a convenience method for setting a client-side `compactModeLabelGenerator` function.
      *   The expression receives as input the array of selected items, named {@code items},
      *   and should return a String value representing the label. For example:
-     *   <pre>
      *   {@code return items.length + " " (item.length === 1 ? 'Item' : 'Items');}
-     *   </pre>
      *   To set a server-side callback for generating the compact mode label use {@link #setCompactModeLabelGenerator(Function)}.
      * </p>
      *
@@ -1110,7 +1113,7 @@ public class MultiselectComboBox<T>
      * Sets a compact mode label generator.
      * <p>
      *   This methods sets a 'server-side' compact mode label generator that is invoked every time the value changes.
-     *   <br/>
+     *   <br>
      *   To set a client-side callback for generating the compact mode label user {@link #setCompactModeLabelGenerator(String)}.
      * </p>
      *
@@ -1124,6 +1127,19 @@ public class MultiselectComboBox<T>
 
     private void setCompactModeLabel(String label) {
         getElement().callJsFunction("$connector.setCompactModeLabel", label);
+    }
+
+    /**
+     * Sets the given {@link Function} as unique key data generator.
+     * The default implementation is {@link Object#hashCode()}.
+     *
+     * @param uniqueKeyDataGenerator {@link Function} to generate unique key data
+     */
+    public void setUniqueKeyDataGenerator(Function<T, Object> uniqueKeyDataGenerator) {
+       this.uniqueKeyDataGenerator = uniqueKeyDataGenerator;
+       if (dataCommunicator != null) {
+      	 dataCommunicator.setUniqueKeyDataGenerator(uniqueKeyDataGenerator);
+       }
     }
 
     /**
