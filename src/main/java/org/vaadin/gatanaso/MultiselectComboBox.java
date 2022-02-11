@@ -291,8 +291,9 @@ public class MultiselectComboBox<T>
         this.renderer = renderer;
 
         if (template == null) {
+            getElement().setAttribute("suppress-template-warning", true);
             template = new Element("template");
-            getElement().executeJs("return $0.shadowRoot.querySelector('vaadin-combo-box-light').appendChild($1)",
+            getElement().executeJs("return $0.shadowRoot.querySelector('multiselect-combo-box-internal').appendChild($1)",
                     getElement(), template);
         }
         scheduleRender();
