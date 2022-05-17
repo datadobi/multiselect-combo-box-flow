@@ -211,9 +211,9 @@
     </profiles>
     <distributionManagement>
         <repository>
-            <id>central</id>
+            <id>internal</id>
             <name>mavenserver-releases</name>
-            <url>http://mavenserver.dobi:8081/artifactory/libs-release-local</url>
+            <url>http://mavenserver.dobi:8081/artifactory/ext-release-local</url>
         </repository>
     </distributionManagement>
 </project>
